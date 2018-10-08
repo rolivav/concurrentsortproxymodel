@@ -1,5 +1,7 @@
 #include "concurrentsortproxymodel.h"
 
+#include <QtConcurrent>
+
 ConcurrentSortProxyModel::ConcurrentSortProxyModel(QObject* parent)
 	: QAbstractProxyModel(parent) {
 }
@@ -72,6 +74,11 @@ void ConcurrentSortProxyModel::resetMapping()
 		QPersistentModelIndex proxyIndex = createIndex(i, 0);
 		mMapping.insert(sourceIndex, proxyIndex);
 	}
+}
+
+void ConcurrentSortProxyModel::concurrentSort() {
+	// fetch relevant info
+	QtConcurrent::run([](){});
 }
 
 void ConcurrentSortProxyModel::sourceModelReset() {

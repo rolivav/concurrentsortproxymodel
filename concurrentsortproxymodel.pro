@@ -1,4 +1,4 @@
-QT += widgets
+QT += widgets concurrent
 
 HEADERS     = treeitem.h \
               treemodel.h \
