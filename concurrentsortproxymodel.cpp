@@ -7,20 +7,11 @@ ConcurrentSortProxyModel::ConcurrentSortProxyModel(QObject* parent)
 ConcurrentSortProxyModel::~ConcurrentSortProxyModel() {
 }
 
-QModelIndex ConcurrentSortProxyModel::index(int row, int column, const QModelIndex &parent) const
-{
-    QModelIndex sourceParent;
+QModelIndex ConcurrentSortProxyModel::index(int row, int column, const QModelIndex &parent) const {
     if (parent.isValid()) {
-        sourceParent = mapToSource(parent);
+        return QModelIndex();
     }
-    QMapIterator<QPersistentModelIndex, QPersistentModelIndex> it(mMapping);
-    while (it.hasNext()) {
-        it.next();
-        if (it.value().row() == row && it.value().column() == column){
-            return it.value();
-        }
-    }
-    return QModelIndex();
+    return createIndex(row, column);
 }
 
 QModelIndex ConcurrentSortProxyModel::parent(const QModelIndex &child) const
@@ -36,10 +27,8 @@ int ConcurrentSortProxyModel::rowCount(const QModelIndex &parent) const {
     return mMapping.size();
 }
 
-int ConcurrentSortProxyModel::columnCount(const QModelIndex &parent) const
-{
-    Q_UNUSED(parent);
-    return 1;
+int ConcurrentSortProxyModel::columnCount(const QModelIndex &parent) const {
+    return sourceModel()->columnCount(parent);
 }
 
 void ConcurrentSortProxyModel::setSourceModel(QAbstractItemModel *model) {
@@ -55,7 +44,8 @@ QModelIndex ConcurrentSortProxyModel::mapToSource(const QModelIndex &proxyIndex)
     if (!proxyIndex.isValid()) {
         return QModelIndex();
     }
-    return mMapping.key(proxyIndex);
+    QModelIndex firstColumnSourceIndex = mMapping.key(proxyIndex.sibling(proxyIndex.row(), 0));
+    return firstColumnSourceIndex.sibling(firstColumnSourceIndex.row(), proxyIndex.column());
 }
 
 QModelIndex ConcurrentSortProxyModel::mapFromSource(const QModelIndex &sourceIndex) const
@@ -97,3 +87,8 @@ bool ConcurrentSortProxyModel::hasChildren(const QModelIndex &parent) const {
     }
     return true;
 }
+
+
+
+//QVariant ConcurrentSortProxyModel::headerData(int section, Qt::Orientation orientation, int role) const {
+//}

@@ -19,6 +19,9 @@ public:
 
     bool hasChildren(const QModelIndex &parent) const override;
 
+    //QVariant data(const QModelIndex &index, int role) const override;
+    //QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
+
     // QAbstractProxyModel interface
     void setSourceModel(QAbstractItemModel* model) override;
 
@@ -26,6 +29,7 @@ public:
     QModelIndex mapFromSource(const QModelIndex &sourceIndex) const override;
 
 private:
+
     void sourceModelAboutToReset();
     void sourceModelReset();
 
