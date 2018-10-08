@@ -57,22 +57,23 @@
 
 int main(int argc, char *argv[])
 {
-    Q_INIT_RESOURCE(concurrentsortproxymodel);
+	Q_INIT_RESOURCE(concurrentsortproxymodel);
 
-    QApplication app(argc, argv);
+	QApplication app(argc, argv);
 
-    QFile file(":/default.txt");
-    file.open(QIODevice::ReadOnly);
-    TreeModel model(file.readAll());
-    file.close();
+	QFile file(":/default.txt");
+	file.open(QIODevice::ReadOnly);
+	TreeModel model(file.readAll());
+	file.close();
 
-    QTreeView view;
+	QTreeView view;
 
-    auto sortProxyModel = new ConcurrentSortProxyModel(&view);
-    sortProxyModel->setSourceModel(&model);
+	auto sortProxyModel = new ConcurrentSortProxyModel(&view);
+	sortProxyModel->setSourceModel(&model);
 
-    view.setModel(sortProxyModel);
-    view.setWindowTitle(QObject::tr("Simple Tree Model"));
-    view.show();
-    return app.exec();
+	view.setModel(sortProxyModel);
+	view.setWindowTitle(QObject::tr("Simple Tree Model"));
+	view.show();
+	return app.exec();
 }
+
