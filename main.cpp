@@ -72,6 +72,7 @@ int main(int argc, char *argv[])
 	sortProxyModel->setSourceModel(&model);
 
 	view.setModel(sortProxyModel);
+    view.setSortingEnabled(true);
 	view.setWindowTitle(QObject::tr("Simple Tree Model"));
 	view.show();
 	return app.exec();
